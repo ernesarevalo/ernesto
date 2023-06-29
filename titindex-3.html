@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Preguntas y Respuestas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .answer {
+      display: none;
+      margin-bottom: 10px;
+    }
+
+    .question-text,
+    .answer-text {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Preguntas y Respuestas</h1>
+
+  <div>
+    <button id="nextButton">Sig Pregunta</button>
+    <button id="showAnswerButton">Mostrar Respuesta</button>
+  </div>
+  
+  <div>
+    <button id="randomButton">Pregunta Azar</button>
+    <button id="showAllButton">Mostrar Todas</button>
+  </div>
+
+  <div>
+    <button id="resetButton">Resetear</button>
+  </div>
+
+  <div class="question" id="questionContainer">
+    <p class="question-text" id="questionText"></p>
+    <p class="answer-text answer" id="answerText"></p>
+  </div>
+
+  <script>
+    // Array de preguntas y respuestas
+    var questions = [
+  {
+    question: '¿Qué es y para qué sirve A.F.I.P?',
+    answer: 'Es la administración general de ingresos públicos, es el organismo que se encarga de la ejecución política tributaria.'
+  },
+  {
+    question: '¿Qué es la A.F.I.P. y cómo se divide?',
+    answer: 'Abarca la DIRECCION GENERAL IMPOSITIVA Y DG DE ADUANA Y DG R SOC INTEGRAN AFIP.'
+  },
+  {
+    question: '¿Qué es la ley de Procedimientos tributarios?',
+    answer: 'Es una ley que legisla la forma de ejecución sobre el resto de todas las leyes.'
+  },
+  {
+    question: '¿Quién es el funcionario a cargo del A.F.I.P.?',
+    answer: 'El Administrador Federal es el que está a cargo de afip, siendo también el representante ante los poderes públicos, responsables y terceros. podrá delegar en los dg y los sdg.'
+  },
+  {
+    question: '¿Quiénes son los funcionarios que lo secundan?',
+    answer: 'director general a cargo de la dirección gral impositiva, otro a cargo de la dg de recursos de la seguridad social. el administrador federal designa y remueve a los directores y subdirectores generales.'
+  },
+  {
+    question: '¿Cuál es la función administrativa?',
+    answer: 'Representar legalmente a la afip, organizar y reglamentar su funcionamiento interno, y representar a la afip ante los tribunales judiciales y administrativos.'
+  },
+  {
+    question: '¿Cuál es la función de dirección?',
+    answer: 'Es la dirección de la actividad del organismo mediante el ejercicio de las funciones, poderes y facultades que las leyes y otras disposiciones le encomienden.\n- Determinar, percepción, recaudación como también exigencia, ejecución, devolución, ejecución, devolución de impuestos, derechos y gravámenes a cargos de la afip\n- Requerir el auxilio de fuerzas de seguridad\n- Realizar investigaciones en el extranjero en materia de ilícitos\n- Designar funciones para disponer devoluciones o acreditaciones de gravámenes'
+  },
+  {
+    question: '¿Cuál es la función de reglamentación?',
+    answer: 'Son las normas administrativas y procedimentales obligatorias para responsables y terceros. Tienen vigencia a partir de la publicación en el boletín oficial.'
+  },
+  {
+    question: '¿Cuál es la función de interpretación?',
+    answer: 'Cuando afip contesta es de carácter obligatorio y vinculante, es para toda la actividad antes del hecho. Es antes de la consulta.'
+  },
+  {
+    question: '¿Quién puede ser juez administrativo?',
+    answer: 'Pueden ser jueces administrativos.\n- El administrador federal.\n- El director y subdirectores generales.\n- Sustitutivos: directores, jefes de departamentos, subzonas, región, división, agencia o distrito.'
+  },
+  {
+    question: '¿Qué es el domicilio fiscal?',
+    answer: 'Es en el cual se desarrolla la actividad laboral, donde se trabaja.'
+  },
+  {
+    question: '¿Qué es el domicilio real?',
+    answer: 'El lugar donde se tiene establecido su residencia.'
+  },
+  {
+    question: '¿Qué es el domicilio legal?',
+    answer: 'Es el lugar donde la ley fija su residencia.'
+  },
+  {
+    question: '¿Qué es el DOMICILIO FISCAL ELECTRONICO?',
+    answer: 'Es un buzón en la página de la afip en donde el contribuyente ingresa con cuit y clave fiscal, y donde la afip notifica todas las comunicaciones pertinentes. Es obligatorio y cumple la función de domicilio fiscal constituido, por lo cual, cuando se reciba una notificación por este medio, se considera al contribuyente efectivamente notificado.'
+  },
+  {
+    question: '¿Qué es la verificación?',
+    answer: 'Es verificar si se cumplen con los pagos que le corresponden.'
+  },
+  {
+    question: '¿Qué es la fiscalización?',
+    answer: 'Es un control posterior de las presentaciones de las declaraciones juradas ddjj.'
+  },
+  {
+    question: '¿Qué es la clausura preventiva?',
+    answer: 'Es cuando cierra un establecimiento por causas graves.\n- No emitir factura\n- Que los datos estén fraguados(falsos)\n- CLAUSULA PREVENTIVA POR QUE PODÉS LLEGAR ABRIR DE NUEVO EJM CROMAÑON.'
+  },
+  {
+    question: '¿Qué son los intereses?',
+    answer: 'Es el recargo que abonamos por un pago fuera de término.'
+  },
+  {
+    question: '¿Qué son los intereses resarcitorios?',
+    answer: 'Se generan cuando se vence el plazo de una declaración jurada ddjj.\n- Periodo de prórroga.\n- Ejecución de demanda fiscal.\n- Apertura de concurso.'
+  },
+  {
+    question: '¿Qué son los intereses punitorios?',
+    answer: 'Se generan cuando sea necesario recurrir a la vía judicial para hacer efectivos los importes adeudados. El devengamiento es desde que se impone la demanda hasta que se cancela la deuda.'
+  },
+  {
+    question: '¿Cuál es el concepto de anatocismo?',
+    answer: 'En caso de cancelarse total o parcialmente la deuda principal sin cancelarse al mismo tiempo los intereses que dicha deuda hubiera devengado, estos se transformarán en capital y devengarán desde ese momento nuevos intereses resarcitorios.\n- Intereses de intereses.'
+  },
+  {
+    question: '¿Qué es el pago?',
+    answer: 'Es el cumplimiento de la prestación que hace al objeto de la obligación. La forma de realizarlo es mediante el volante electrónico de pago (vep) que se direcciona con la cuenta del contribuyente. Los sujetos que lo realizan son los contribuyentes, responsables por deuda ajena y los responsables sustitutos.'
+  },
+  {
+    question: '¿Qué es la compensación?',
+    answer: 'Tiene lugar cuando dos personas por derecho propio reúnen la calidad de acreedor y deudor recíprocamente. Existen 2 tipos de saldos, el saldo técnico (cuando se genera un saldo a favor del contribuyente que sólo se puede compensar con el mismo impuesto en períodos posteriores) y el de libre disponibilidad (cuando se genera un saldo a favor del contribuyente que se puede utilizar para saldar otros impuestos).'
+  },
+  {
+    question: '¿Qué es la prescripción?',
+    answer: 'Es el modo de extinción de una exigibilidad de obligación tributaria por el paso del tiempo. En el caso de contribuyentes inscriptos, el período de prescripción son 5 años, en el caso de contribuyentes no inscriptos, es de 10 años. Si durante ese período recibe una notificación se interrumpe el período de prescripción.'
+  },
+  {
+    question: '¿Qué es la confusión?',
+    answer: 'Es cuando se resumen en una misma persona la calidad de acreedor y deudor.'
+  },
+  {
+    question: '¿Qué es la remisión?',
+    answer: 'Es cuando Afip te perdona la deuda (nunca pasa).'
+  },
+  {
+    question: '¿Qué es la novación?',
+    answer: 'Es la sustitución de una obligación por otra.'
+  }
+];
+
+var questionIndex = 0;
+
+function showNextQuestion() {
+  questionIndex = (questionIndex + 1) % questions.length;
+  var question = questions[questionIndex];
+
+  document.getElementById('questionText').textContent = question.question;
+  document.getElementById('answerText').textContent = '';
+  document.getElementById('answerText').style.display = 'none';
+}
+
+function showRandomQuestion() {
+  questionIndex = Math.floor(Math.random() * questions.length);
+  var question = questions[questionIndex];
+
+  document.getElementById('questionText').textContent = question.question;
+  document.getElementById('answerText').textContent = '';
+  document.getElementById('answerText').style.display = 'none';
+}
+
+function showAnswer() {
+  var question = questions[questionIndex];
+  var answerElement = document.getElementById('answerText');
+  answerElement.textContent = question.answer;
+  answerElement.style.display = 'block';
+}
+
+function showAllAnswers() {
+  var container = document.getElementById('questionContainer');
+  container.innerHTML = '';
+
+  for (var i = 0; i < questions.length; i++) {
+    var question = questions[i];
+    var questionElement = document.createElement('div');
+    questionElement.className = 'question';
+
+    var questionText = document.createElement('p');
+    questionText.className = 'question-text';
+    questionText.textContent = (i + 1) + '. ' + question.question;
+
+    var answerText = document.createElement('p');
+    answerText.className = 'answer-text answer';
+    answerText.textContent = question.answer;
+    answerText.style.display = 'block';
+
+    questionElement.appendChild(questionText);
+    questionElement.appendChild(answerText);
+    container.appendChild(questionElement);
+  }
+}
+
+document.getElementById('nextButton').addEventListener('click', showNextQuestion);
+document.getElementById('randomButton').addEventListener('click', showRandomQuestion);
+document.getElementById('showAnswerButton').addEventListener('click', showAnswer);
+document.getElementById('showAllButton').addEventListener('click', showAllAnswers);
+document.getElementById('resetButton').addEventListener('click', function() {
+  location.reload();
+});
+
+showNextQuestion();
+</script>
+</body>
+</html>
